@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capital City Quiz</title>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+
+<style>
+  .ans-status{
+    margin: 25px 25px;
+    color: aliceblue;
+  }
+  /* Define a keyframe animation for smoothly transitioning background color */
+@keyframes errorAnimation {
+  0% {
+    background-color: red;
+  }
+  50% {
+    background-color: white;
+  }
+  100% {
+    background-color: red;
+  }
+}
+
+/* Apply the animation to elements with the "error" class */
+.error {
+  animation: errorAnimation 2s infinite;
+  /* Adjust the animation duration and other properties as needed */
+  display: inline; /* Display as inline to apply only to the word */
+}
+</style>
+
+<body id="app">
+
+  <div class="ans-status">
+    <%if(locals.wasCorrect){ %>
+      <span class="checkmark">✔</span>
+      <h2>Great</h2>
+      <p> keep going on!</p>
+      <% } else if (locals.wasCorrect===false) { %>
+        <span class="cross" id="error">✖</span>
+        <div class="error">
+              <h2>Wrong Answer</h2>
+        </div>
+    
+        <% } %>
+      </div>
+
+  <form class="container" action="/submit" method="post">
+    <div class="horizontal-container">
+      <h3>
+        Total Score:
+        <span id="score">
+          <%= locals.totalScore ? totalScore : "0" %>
+        </span>
+      </h3>
+
+    </div>
+
+    <h1 id="countryName">
+      <%=question.country %>
+    </h1>
+    <div class="answer-container">
+      <input type="text" name="answer" id="userInput" placeholder="Enter the capital" autofocus autocomplete="off">
+
+    </div>
+    <button type="submit">SUBMIT
+    </button>
+
+  </form>
+  <script>
+    var wasCorrect = "<%= locals.wasCorrect %>";
+    console.log(wasCorrect)
+    if (wasCorrect === "false") {
+      alert('Game over! Final best score: <%= locals.totalScore %>');
+      document.getElementById("app").innerHTML = '<a href="/" class="restart-button">Restart</a>'
+    }
+
+
+  </script>
+</body>
+
+</html>
